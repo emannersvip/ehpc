@@ -130,7 +130,7 @@ parser.add_argument('--show', dest='show', help='Show action', nargs=2, required
 #parser.add_argument('--list', dest='accumulate', action='store_const',
 #                    const=sum, default=max, required=False,
 #                    help='sum the integers (defatul: find max)')
-parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.4a')
+parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.5a')
 parser.add_argument('-v', '--verbose', action='store_true')
 
 args = parser.parse_args()
