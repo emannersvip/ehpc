@@ -5,6 +5,37 @@ import argparse
 # https://www.tutorialspoint.com/python_data_persistence/python_data_persistence_quick_guide.htm
 import shelve
 
+def ehpc_types(ctype):
+    if ctype == 'status':
+        show_cluster_status()
+    elif ctype == 'list':
+        list_chosen_type()
+    elif ctype == 'create':
+        create_chosen_type()
+    elif ctype == 'show':
+        show_chosen_type_instance()
+    elif ctype == 'set':
+        set_chosen_type_instance()
+    else:
+        print('This should never happen! DEBUG!!')
+    return
+
+def show_cluster_status():
+    print('Cluster name: ' + show[0])
+    print('---- Login Node(s):     ' + getLoginNodes())
+    print('---- Scheduler Node(s): ' + getSchedulerNodes())
+    print('---- Compute Node(s):   ', end='')
+    print(getComputeNodes())
+    return
+def list_chosen_type():
+    return
+def create_chosen_type():
+    return
+def show_chosen_type_instance():
+    return
+def set_chosen_type_instance():
+    return
+
 def ehpc_create(create):
     if create == None:
         return
@@ -61,13 +92,6 @@ def ehpc_set(set):
     if set != None:
         print(set)
 # Show a specific value
-def ehpc_show(show):
-    if show != None:
-        print('Cluster name: ' + show[0])
-        print('---- Login Node(s):     ' + getLoginNodes())
-        print('---- Scheduler Node(s): ' + getSchedulerNodes())
-        print('---- Compute Node(s):   ', end='')
-        print(getComputeNodes())
 
 def getLoginNodes():
     foo = db.get('logins')
@@ -111,39 +135,40 @@ def append_computes(tail):
     #print(db['computes'])
     return
 
+# if __name__ == '__main__':
+    # stuff
+
 # Global Variables
 # TODO: Change list to data structure that does now allow dupes
+# TODO: Print (list) in color coded method.
+#       - Red:    Can't contact
+#       - Yellow: CAN contact but not fully configured.
+#       - Green:  CAN contact AND fully configred.
+
 ehpc_clusters = []
 
 # Persistent Storage
 db = shelve.open('cluster.db')
+
+arg1 = ['status', 'create', 'list', 'show', 'set']
+hpc_types = ['computes', 'scheduler', 'logins']
 
 parser = argparse.ArgumentParser(
     prog='ehpc',
     description='Fully and comprehensively manage your HPC cluster',
     epilog='2023 Koballion')
 
-parser.add_argument('--create', dest='create', help='Create action', nargs=2, required=False)
-parser.add_argument('--list', dest='list', help='List action', nargs='?')
-parser.add_argument('--set', dest='set', help='Set action', nargs='?')
-parser.add_argument('--show', dest='show', help='Show action', nargs=2, required=False)
-#parser.add_argument('--list', dest='accumulate', action='store_const',
-#                    const=sum, default=max, required=False,
-#                    help='sum the integers (defatul: find max)')
+parser.add_argument('types', type=str, choices=arg1, help='Choose the cluster object type to manipulate')
 parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.5a')
 parser.add_argument('-v', '--verbose', action='store_true')
 
 args = parser.parse_args()
 
-#print(args.create)
-#print(args.list)
-#print(args.show)
-#print(args.set)
-
-ehpc_create(args.create)
-ehpc_list(args.list)
-ehpc_show(args.show)
-ehpc_set(args.set)
+ehpc_types(args.types)
+#ehpc_create(args.create)
+#ehpc_list(args.list)
+#ehpc_show(args.show)
+#ehpc_set(args.set)
 
 # Close the program cleanly.
 db.close()
