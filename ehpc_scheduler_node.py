@@ -3,7 +3,7 @@
 import socket
 import subprocess
 
-from .ehpc_colors import eColors
+from ehpc_colors import eColors
 
 # DEBUG CODE
 debug = 1

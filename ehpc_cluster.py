@@ -3,8 +3,8 @@
 import shelve
 #import sqlite3
 
-from .ehpc_login_node import LoginNode
-from .ehpc_colors import eColors
+from ehpc_login_node import LoginNode
+from ehpc_colors import eColors
 
 # TODO:
 #   1) Make clear difference between init cluster and create cluster
