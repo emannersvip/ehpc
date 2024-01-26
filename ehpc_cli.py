@@ -101,7 +101,7 @@ def login_info():
             print('============================')
             print(f"{sh['login'].name}")
             print('============================')
-            print(f"Login Node:   {sh['login'].name}")
+            print(f"Login Node:   {sh['login'].name} ({sh['login'].ip})")
         try:
             if sh['scheduler']:
                 pass
@@ -135,8 +135,11 @@ def scheduler_info():
             print('============================')
             print(f"{sh['scheduler'].name}")
             print('============================')
-            print(f"Scheduler:   {sh['scheduler'].name}")
-            print('Hint: Please add compute nodes using: `compute add <bob.compute>`')
+            print(f"Scheduler:   {sh['scheduler'].name} ({sh['scheduler'].ip})")
+        try:
+            if sh['scheduler']: pass
+            else: print('Hint: Please add compute nodes using: `compute add <bob.compute>`')
+        except: pass    
     except KeyError as e:
         print('No scheduler defined. Create a scheduler using: `scheduler add <bob.scheduler>`')
     return
