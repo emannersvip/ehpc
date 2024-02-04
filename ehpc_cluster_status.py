@@ -31,18 +31,23 @@ def sanitize_cmds(cmd):
         else:
             print('Unsupported command')
 
-
-
-
-
-
 def ssh_to_host(cmd):
-    cluster_ips = ['192.168.68.10','192.168.68.101','192.168.68.102','192.168.68.103','192.168.68.104']
+    cluster_ips = ['192.168.1.10','192.168.1.65','192.168.1.66','192.168.1.67','192.168.1.68','192.168.1.84','192.168.1.85','192.168.1.86','192.168.1.175','192.168.68.10','192.168.68.101','192.168.68.102','192.168.68.103','192.168.68.104']
 
     command = sanitize_cmds(cmd)
     for host_ip in cluster_ips:
         result = subprocess.check_output(["ssh"] + [host_ip, command]).decode("utf-8").strip()
-        print(f"{host_ip}: {result}")
+
+        if cmd == 'cpu':
+            a = result.split('\n')
+            if len(a) > 1:
+                a[1] = a[1][:0] + "  " + a[1][0:]
+                print(f"{host_ip}: {a[0]}")
+                print(f"             : {a[1]}")
+            else:
+                print(f"{host_ip}: {a[0]}")
+        else:
+            print(f"{host_ip}: {result}")
 
 def main():
     parser = argparse.ArgumentParser(
