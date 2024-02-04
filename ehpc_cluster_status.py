@@ -31,6 +31,28 @@ def sanitize_cmds(cmd):
         else:
             print('Unsupported command')
 
+def format_cpu_set_tab(line,n):
+    b = ''
+    if n == 1:
+        a = line.split()
+        b = f"{a[0]} {a[1]}"
+    elif n == 2:
+        a = line.split()
+        b = f"{a[0]} {a[1]} {a[2]} {a[3]}"
+    else:
+        print('format_cpu_set_tab: This should never happen.')
+    return b
+
+def format_cpu(result,ip):
+    a = result.split('\n')
+    if len(a) > 1:
+        a[1] = a[1][:0] + "  " + a[1][0:]
+        print(f"{ip}: " + format_cpu_set_tab(a[0],1))
+        print(f"  : " + format_cpu_set_tab(a[1], 2))
+    else:
+        print(f"{ip}: " + format_cpu_set_tab(a[0],1))
+    return
+
 def ssh_to_host(cmd):
     cluster_ips = ['192.168.1.10','192.168.1.65','192.168.1.66','192.168.1.67','192.168.1.68','192.168.1.84','192.168.1.85','192.168.1.86','192.168.1.175','192.168.68.10','192.168.68.101','192.168.68.102','192.168.68.103','192.168.68.104']
 
@@ -39,13 +61,7 @@ def ssh_to_host(cmd):
         result = subprocess.check_output(["ssh"] + [host_ip, command]).decode("utf-8").strip()
 
         if cmd == 'cpu':
-            a = result.split('\n')
-            if len(a) > 1:
-                a[1] = a[1][:0] + "  " + a[1][0:]
-                print(f"{host_ip}: {a[0]}")
-                print(f"             : {a[1]}")
-            else:
-                print(f"{host_ip}: {a[0]}")
+            format_cpu(result,host_ip)
         else:
             print(f"{host_ip}: {result}")
 
