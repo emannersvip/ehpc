@@ -73,7 +73,7 @@ def main():
     parser.add_argument('command')
     args = parser.parse_args()
 
-    print('Hello eHPC')
+    print('eHPC..!')
     ssh_to_host(args.command)
     sys.exit(0)
 
