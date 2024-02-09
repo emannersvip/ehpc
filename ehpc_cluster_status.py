@@ -13,7 +13,7 @@ log_file_path = os.path.abspath('./ehpc_cluster_status.log')
 
 def sanitize_cmds(cmd):
     # List to be used to sanity check inputs
-    cluster_commands = ['uname','uptime','free','codename','cpu']
+    cluster_commands = ['uname','uptime','free','codename','cpu','node']
     for ucmd in cluster_commands:
         if cmd in ucmd:
             if 'uname' in cmd:
@@ -26,10 +26,13 @@ def sanitize_cmds(cmd):
                 return('grep VERSION_CODENAME /etc/os-release')
             elif 'cpu' in cmd:
                 return('lscpu | grep "CPU(s):"')
+            elif 'node' in cmd:
+                return('if pgrep node_exporter 1> /dev/null ; then echo "YES"; else echo "NO"; fi ')
             else:
                 return('Elmer')
         else:
-            print('Unsupported command')
+            #print(f"Unsupported command: cmd-{cmd} ucmd-{ucmd}")
+            pass
 
 def format_cpu_set_tab(line,n):
     b = ''
